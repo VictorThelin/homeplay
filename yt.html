@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Homeplay trailer</title>
+<!--
+  Mellansida för Homeplays trailers: appen körs från lokala filer på TV:n, och då vägrar YouTubes
+  inbäddade spelare att spela ("Fel 153" – ingen webbadress som avsändare). Appen bäddar in den här
+  sidan, som bäddar in YouTubes vanliga spelare och skickar meddelanden fram och tillbaka.
+  ?v=<YouTube-id>  &mute=1  &start=<sekunder>  &crop=1 (beskär kanterna, för trailern i bakgrunden)
+  Inga kakor, ingen spårning – bara YouTubes egen spelare.
+-->
+<style>
+  html, body { margin: 0; width: 100%; height: 100%; background: #000; overflow: hidden; }
+  iframe { position: absolute; left: 0; top: 0; width: 100%; height: 100%; border: 0; }
+  body.crop iframe { left: -8%; top: -8%; width: 116%; height: 116%; }
+</style>
+</head>
+<body>
+<script>
+(function () {
+  function param(k) { var m = new RegExp('[?&]' + k + '=([^&#]*)').exec(location.search); return m ? decodeURIComponent(m[1]) : ''; }
+  var id = param('v').replace(/[^A-Za-z0-9_-]/g, '').slice(0, 11);
+  if (!id) return;
+  if (param('crop') === '1') document.body.className = 'crop';
+  var f = document.createElement('iframe');
+  f.setAttribute('allow', 'autoplay; encrypted-media; picture-in-picture');
+  f.src = 'https://www.youtube.com/embed/' + id + '?autoplay=1&controls=0&rel=0&playsinline=1&iv_load_policy=3&fs=0&disablekb=1' +
+    '&enablejsapi=1&mute=' + (param('mute') === '1' ? 1 : 0) + '&start=' + (parseInt(param('start'), 10) || 0) +
+    '&origin=' + encodeURIComponent(location.protocol + '//' + location.host);
+  // YouTube -> appen (tillstånd, slut) och appen -> YouTube (paus/spela)
+  window.addEventListener('message', function (e) {
+    if (e.source === f.contentWindow) { try { parent.postMessage(e.data, '*'); } catch (x) { } }
+    else if (e.source === parent) { try { f.contentWindow.postMessage(e.data, '*'); } catch (x) { } }
+  });
+  f.onload = function () { try { f.contentWindow.postMessage(JSON.stringify({ event: 'listening', id: 1 }), '*'); } catch (x) { } };
+  document.body.appendChild(f);
+})();
+</script>
+</body>
+</html>
