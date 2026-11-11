@@ -3,28 +3,73 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Homeplay för Google TV</title>
+<title>Hämta Homeplay</title>
+<!-- Homeplays sida: victorthelin.github.io/homeplay (källan: docs/hemsida/index.html i VictorThelin/tittarn).
+     Länken i inbjudan – visar rätt knapp för enheten: iPhone → TestFlight, Android/Google TV → appen. -->
 <style>
-  body { margin: 0; background: #101014; color: #f2f2f4; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
-  main { max-width: 760px; margin: 0 auto; padding: 48px 24px; }
-  h1 { font-size: 40px; margin: 0 0 8px; } h1 span { color: #f2545b; }
-  p { font-size: 20px; line-height: 1.5; color: #c4c4cc; }
-  a.btn { display: inline-block; margin: 24px 0; padding: 18px 36px; border-radius: 12px; background: #f2545b; color: #fff;
-          font-size: 26px; font-weight: 700; text-decoration: none; }
-  a.btn:focus, a.btn:hover { outline: 4px solid #fff; }
-  ol { font-size: 20px; line-height: 1.6; color: #c4c4cc; }
+  :root { --bg: #101014; --kort: #18181e; --text: #f2f2f4; --muted: #a3a3ad; --dim: #6b6b75; --rod: #f2545b; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 640px; margin: 0 auto; padding: 44px 22px 60px; }
+  .logo { font-size: 40px; font-weight: 800; letter-spacing: -1px; margin: 0 0 6px; } .logo span { color: var(--rod); }
+  .sub { font-size: 19px; line-height: 1.5; color: var(--muted); margin: 0 0 26px; }
+  .kort { background: var(--kort); border-radius: 18px; padding: 24px 22px; margin: 0 0 16px; }
+  .kort h2 { font-size: 20px; margin: 0 0 6px; }
+  .kort p { font-size: 16px; line-height: 1.5; color: var(--muted); margin: 0; }
+  a.btn { display: block; text-align: center; margin: 16px 0 6px; padding: 17px 20px; border-radius: 12px; background: var(--rod); color: #fff;
+          font-size: 20px; font-weight: 700; text-decoration: none; }
+  a.btn.gra { background: #2a2a33; }
+  a.btn:focus, a.btn:hover { outline: 4px solid #fff; outline-offset: 2px; }
+  .liten { font-size: 14px; color: var(--dim); line-height: 1.5; margin: 8px 0 0; }
+  h3 { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: var(--dim); margin: 30px 0 12px; }
+  ol { margin: 0; padding: 0; list-style: none; counter-reset: s; }
+  ol li { counter-increment: s; position: relative; padding: 0 0 16px 46px; font-size: 17px; line-height: 1.5; color: #d6d6dc; }
+  ol li::before { content: counter(s); position: absolute; left: 0; top: -1px; width: 30px; height: 30px; border-radius: 15px; background: var(--rod); color: #fff;
+                  font-weight: 700; font-size: 15px; display: grid; place-items: center; }
+  b { color: var(--text); }
+  .dold { display: none; }
 </style>
 </head>
 <body>
 <main>
-  <h1>home<span>play</span></h1>
-  <p>Appen för Google TV och Chromecast. Den behöver en inbjudningskod – den finns i inbjudningsmejlet.</p>
-  <a class="btn" href="https://github.com/VictorThelin/homeplay/releases/latest/download/homeplay.apk" autofocus>Ladda ner Homeplay</a>
+  <div class="logo">home<span>play</span></div>
+  <p class="sub">Film, serier och TV i mobilen och på TV:n.</p>
+
+  <div class="kort" id="iphone">
+    <h2>iPhone</h2>
+    <p>Homeplay finns via Apples TestFlight. Installera appen TestFlight om den frågar, och tryck sedan Installera.</p>
+    <a class="btn" href="https://testflight.apple.com/join/ABYjd8Pv">Hämta Homeplay till iPhone</a>
+  </div>
+
+  <div class="kort" id="android">
+    <h2>Android-mobil och Google TV</h2>
+    <p>Tryck på knappen och välj Installera. Frågar mobilen eller TV:n om att tillåta appar från okända källor – tillåt det för webbläsaren (eller appen Downloader på TV:n).</p>
+    <a class="btn" href="https://github.com/VictorThelin/homeplay/releases/latest/download/homeplay.apk">Ladda ner Homeplay</a>
+    <p class="liten">Google TV: installera appen <b>Downloader</b> från Play Butik, öppna den och skriv in adressen victorthelin.github.io/homeplay.</p>
+  </div>
+
+  <div class="kort dold" id="samsung">
+    <h2>Samsung-TV</h2>
+    <p>Säg till den som bjöd in dig – du får en rad att köra på en Windows-dator, sedan installeras appen på TV:n.</p>
+  </div>
+
+  <h3>Sedan</h3>
   <ol>
-    <li>Tryck på knappen ovan och välj Installera.</li>
-    <li>Öppna Homeplay på TV:n.</li>
-    <li>Skriv in inbjudningskoden från mejlet och välj Gå med med koden.</li>
+    <li>Öppna Homeplay och tryck <b>Registrera dig</b>.</li>
+    <li>Tryck <b>Be om att bli kopplad</b> – du får ett mejl när det är klart, och appen fortsätter av sig själv.</li>
+    <li>På TV:n visas en kod när du startar Homeplay – tryck <b>Godkänn</b> i rutan som dyker upp i Homeplay på mobilen.</li>
   </ol>
+  <p class="liten">Frågor? Mejla homeplayip@gmail.com · <a href="integritet.html" style="color:var(--dim)">Integritetspolicy</a></p>
 </main>
+<script>
+  // rätt knapp först: iPhone → TestFlight, Android/Google TV → appen, dator → allt (även Samsung)
+  var ua = navigator.userAgent || '';
+  var ios = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+  var android = /Android/.test(ua);
+  var main = document.querySelector('main'), ip = document.getElementById('iphone'), an = document.getElementById('android');
+  if (ios) { an.querySelector('a.btn').className = 'btn gra'; an.parentNode.insertBefore(ip, an); }
+  else if (android) { main.insertBefore(an, ip); ip.querySelector('a.btn').className = 'btn gra'; an.querySelector('a.btn').focus(); }
+  else document.getElementById('samsung').className = 'kort';
+</script>
 </body>
 </html>
