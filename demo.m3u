@@ -1,0 +1,12 @@
+#EXTM3U
+# Homeplay – demolista för Apples granskning (TestFlight). Bara fria filmer och testströmmar:
+# Big Buck Bunny och Tears of Steel (Blender Foundation, CC BY 3.0), Apples testbild för HLS.
+# Ligger på victorthelin.github.io/homeplay/demo.m3u. Ingen riktig IPTV-linje.
+#EXTINF:-1 group-title="Demo – fria filmer",Big Buck Bunny
+https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8
+#EXTINF:-1 group-title="Demo – fria filmer",Tears of Steel
+https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8
+#EXTINF:-1 group-title="Demo – fria filmer",Apple testbild
+https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_ts/master.m3u8
+#EXTINF:-1 group-title="Fria filmer",Tears of Steel (2012)
+https://download.blender.org/demo/movies/ToS/tears_of_steel_720p.mov
