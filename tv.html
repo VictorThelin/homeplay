@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex">
+<title>Öppna Homeplay</title>
+<!-- victorthelin.github.io/homeplay/tv.html?k=KOD (källan: docs/hemsida/tv.html i VictorThelin/tittarn).
+     QR-koden på TV:ns inloggning: mobilkameran öppnar sidan, som direkt öppnar appen med
+     homeplay://tv?k=KOD – appen godkänner TV:n. Inga externa resurser, ingen spårning, och
+     koden skickas inte vidare (no-referrer på länkarna nedan). -->
+<style>
+  :root { --bg: #101014; --kort: #18181e; --text: #f2f2f4; --muted: #a3a3ad; --dim: #6b6b75; --rod: #f2545b; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 640px; margin: 0 auto; padding: 44px 22px 60px; }
+  .logo { font-size: 40px; font-weight: 800; letter-spacing: -1px; margin: 0 0 26px; } .logo span { color: var(--rod); }
+  .kort { background: var(--kort); border-radius: 18px; padding: 24px 22px; margin: 0 0 16px; }
+  .kort h2 { font-size: 22px; line-height: 1.35; margin: 0 0 6px; }
+  .kort p { font-size: 16px; line-height: 1.5; color: var(--muted); margin: 0; }
+  a.btn { display: block; text-align: center; margin: 18px 0 2px; padding: 17px 20px; border-radius: 12px; background: var(--rod); color: #fff;
+          font-size: 20px; font-weight: 700; text-decoration: none; }
+  a.btn:focus, a.btn:hover { outline: 4px solid #fff; outline-offset: 2px; }
+  .liten { font-size: 15px; color: var(--dim); line-height: 1.7; margin: 22px 0 0; text-align: center; }
+  .liten a { color: var(--muted); margin: 0 6px; }
+  .dold { display: none; }
+</style>
+</head>
+<body>
+<main>
+  <div class="logo">home<span>play</span></div>
+
+  <div class="kort">
+    <h2 id="status">Öppnar Homeplay…</h2>
+    <p id="hjalp">Öppnas inte appen? Tryck på knappen.</p>
+    <a class="btn" id="oppna" href="#">Öppna Homeplay</a>
+  </div>
+
+  <p class="liten">Har du inte appen?<br>
+    <a href="https://testflight.apple.com/join/ABYjd8Pv">iPhone</a> ·
+    <a href="https://github.com/VictorThelin/homeplay/releases/latest/download/homeplay.apk">Android</a></p>
+</main>
+<script>
+  (function () {
+    // koden från TV:n: 4–8 bokstäver/siffror, annat godtas inte
+    var m = /[?&]k=([^&#]*)/.exec(location.search), k = '';
+    try { k = m ? decodeURIComponent(m[1]) : ''; } catch (e) { k = ''; }
+    var btn = document.getElementById('oppna');
+    if (!/^[A-Za-z0-9]{4,8}$/.test(k)) {
+      document.getElementById('status').textContent = 'Koden saknas – skanna QR-koden på TV:n igen.';
+      document.getElementById('hjalp').className = 'dold';
+      btn.className = 'dold';
+      return;
+    }
+    var url = 'homeplay://tv?k=' + k;
+    btn.href = url;
+    location.href = url;
+  })();
+</script>
+</body>
+</html>
