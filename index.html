@@ -48,9 +48,12 @@
     <p class="liten">Google TV: installera appen <b>Downloader</b> från Play Butik, öppna den och skriv in adressen victorthelin.github.io/homeplay.</p>
   </div>
 
-  <div class="kort dold" id="samsung">
+  <div class="kort" id="samsung">
     <h2>Samsung-TV</h2>
-    <p>Säg till den som bjöd in dig – du får en rad att köra på en Windows-dator, sedan installeras appen på TV:n.</p>
+    <p id="samsung-dator">Ladda ner programmet på en Windows-dator som är ansluten till samma wifi som TV:n och öppna det. Det visar steg för steg hur Homeplay installeras på TV:n – du kan registrera dig direkt i programmet.</p>
+    <p id="samsung-mobil" class="dold">Öppna <b>victorthelin.github.io/homeplay</b> på en Windows-dator. Där finns programmet som installerar Homeplay på Samsung-TV:n.</p>
+    <a class="btn" id="samsung-btn" href="https://github.com/VictorThelin/homeplay/releases/download/samsung/Homeplay-for-Samsung-TV.exe">Ladda ner Homeplay för Samsung-TV</a>
+    <p class="liten" id="samsung-varning">Säger webbläsaren att filen inte laddas ner så ofta: välj <b>Behåll</b>. Säger Windows ”Windows skyddade datorn”: tryck <b>Mer information</b> och sedan <b>Kör ändå</b>.</p>
   </div>
 
   <h3>Sedan</h3>
@@ -62,14 +65,21 @@
   <p class="liten">Frågor? Mejla homeplayip@gmail.com · <a href="integritet.html" style="color:var(--dim)">Integritetspolicy</a></p>
 </main>
 <script>
-  // rätt knapp först: iPhone → TestFlight, Android/Google TV → appen, dator → allt (även Samsung)
+  // rätt knapp först: iPhone → TestFlight, Android/Google TV → appen, dator → Homeplay för Samsung-TV (tools/samsung-program)
   var ua = navigator.userAgent || '';
   var ios = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
   var android = /Android/.test(ua);
-  var main = document.querySelector('main'), ip = document.getElementById('iphone'), an = document.getElementById('android');
-  if (ios) { an.querySelector('a.btn').className = 'btn gra'; an.parentNode.insertBefore(ip, an); }
-  else if (android) { main.insertBefore(an, ip); ip.querySelector('a.btn').className = 'btn gra'; an.querySelector('a.btn').focus(); }
-  else document.getElementById('samsung').className = 'kort';
+  var main = document.querySelector('main'), ip = document.getElementById('iphone'), an = document.getElementById('android'), sa = document.getElementById('samsung');
+  function id(x) { return document.getElementById(x); }
+  if (ios || android) {
+    // Samsung-programmet är bara för Windows: i mobilen står det var man hittar det
+    id('samsung-dator').className = 'dold'; id('samsung-mobil').className = ''; id('samsung-btn').className = 'dold'; id('samsung-varning').className = 'dold';
+    if (ios) { an.querySelector('a.btn').className = 'btn gra'; an.parentNode.insertBefore(ip, an); }
+    else { main.insertBefore(an, ip); ip.querySelector('a.btn').className = 'btn gra'; an.querySelector('a.btn').focus(); }
+  } else {
+    main.insertBefore(sa, ip);
+    ip.querySelector('a.btn').className = 'btn gra'; an.querySelector('a.btn').className = 'btn gra';
+  }
 </script>
 </body>
 </html>
