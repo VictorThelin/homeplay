@@ -5,57 +5,125 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="referrer" content="no-referrer">
 <meta name="robots" content="noindex">
-<title>Öppna Homeplay</title>
+<meta name="color-scheme" content="dark">
+<title>Logga in TV:n – Homeplay</title>
 <!-- victorthelin.github.io/homeplay/tv.html?k=KOD (källan: docs/hemsida/tv.html i VictorThelin/tittarn).
-     QR-koden på TV:ns inloggning: mobilkameran öppnar sidan, som direkt öppnar appen med
-     homeplay://tv?k=KOD – appen godkänner TV:n. Inga externa resurser, ingen spårning, och
-     koden skickas inte vidare (no-referrer på länkarna nedan). -->
+     QR-koden på TV:ns inloggning. Har mobilen Homeplay öppnar kameran appen DIREKT med adressen (universella
+     länkar på iPhone, App Links på Android – filerna i VictorThelin/victorthelin.github.io/.well-known, Victor
+     14/11) och sidan syns aldrig. Sidan är alltså för den som inte har appen: hämta den först, logga in, skanna
+     QR-koden igen. Knappen Öppna i Homeplay finns kvar för appar utan länkarna (äldre versioner):
+     homeplay://tv?k=KOD, Android: intent-länk som kommer tillbaka hit om appen saknas. Sidan öppnar INTE appen
+     av sig själv (utan appen visar Safari "adressen är ogiltig" – Victor 13/11).
+     Inga externa resurser, ingen spårning, och koden skickas inte vidare (no-referrer). -->
 <style>
   :root { --bg: #101014; --kort: #18181e; --text: #f2f2f4; --muted: #a3a3ad; --dim: #6b6b75; --rod: #f2545b; }
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  body { margin: 0; background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+         -webkit-text-size-adjust: 100%; }
   main { max-width: 640px; margin: 0 auto; padding: 44px 22px 60px; }
-  .logo { font-size: 40px; font-weight: 800; letter-spacing: -1px; margin: 0 0 26px; } .logo span { color: var(--rod); }
+  .logo { font-size: 40px; font-weight: 800; letter-spacing: -1px; margin: 0 0 6px; } .logo span { color: var(--rod); }
+  .sub { font-size: 19px; line-height: 1.5; color: var(--muted); margin: 0 0 26px; }
   .kort { background: var(--kort); border-radius: 18px; padding: 24px 22px; margin: 0 0 16px; }
-  .kort h2 { font-size: 22px; line-height: 1.35; margin: 0 0 6px; }
+  .kort h2 { font-size: 20px; line-height: 1.35; margin: 0 0 6px; }
   .kort p { font-size: 16px; line-height: 1.5; color: var(--muted); margin: 0; }
-  a.btn { display: block; text-align: center; margin: 18px 0 2px; padding: 17px 20px; border-radius: 12px; background: var(--rod); color: #fff;
-          font-size: 20px; font-weight: 700; text-decoration: none; }
+  a.btn { display: block; text-align: center; margin: 16px 0 6px; padding: 17px 20px; border-radius: 12px; background: var(--rod); color: #fff;
+          font-size: 20px; font-weight: 700; text-decoration: none; -webkit-tap-highlight-color: transparent; }
+  a.btn.gra { background: #2a2a33; }
   a.btn:focus, a.btn:hover { outline: 4px solid #fff; outline-offset: 2px; }
-  .liten { font-size: 15px; color: var(--dim); line-height: 1.7; margin: 22px 0 0; text-align: center; }
-  .liten a { color: var(--muted); margin: 0 6px; }
+  .liten { font-size: 14px; color: var(--dim); line-height: 1.5; margin: 8px 0 0; }
+  .svar { font-size: 15px; line-height: 1.5; color: #ffb4b8; margin: 12px 0 0; }
+  h3 { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: var(--dim); margin: 30px 0 12px; }
+  ol { margin: 0; padding: 0; list-style: none; counter-reset: s; }
+  ol li { counter-increment: s; position: relative; padding: 0 0 16px 46px; font-size: 17px; line-height: 1.5; color: #d6d6dc; }
+  ol li::before { content: counter(s); position: absolute; left: 0; top: -1px; width: 30px; height: 30px; border-radius: 15px; background: var(--rod); color: #fff;
+                  font-weight: 700; font-size: 15px; line-height: 30px; text-align: center; }
+  b { color: var(--text); }
   .dold { display: none; }
+  .fram { box-shadow: 0 0 0 2px var(--rod); }
+  ol.steg { margin: 6px 0 4px; }
+  ol.steg li { font-size: 16px; padding-bottom: 12px; }
 </style>
 </head>
 <body>
 <main>
   <div class="logo">home<span>play</span></div>
+  <p class="sub" id="sub">Logga in TV:n med ditt Homeplay-konto.</p>
 
-  <div class="kort">
-    <h2 id="status">Öppnar Homeplay…</h2>
-    <p id="hjalp">Öppnas inte appen? Tryck på knappen.</p>
-    <a class="btn" id="oppna" href="#">Öppna Homeplay</a>
+  <div class="kort fram" id="hamta">
+    <h2>Hämta Homeplay först</h2>
+    <ol class="steg">
+      <li>Hämta appen med knappen här under.</li>
+      <li>Öppna Homeplay och logga in – eller registrera dig om du är ny.</li>
+      <li>Skanna QR-koden på TV:n igen. Då öppnas Homeplay direkt och frågar om TV:n får logga in.</li>
+    </ol>
+    <a class="btn gra" id="iphone" href="https://testflight.apple.com/join/ABYjd8Pv">Hämta Homeplay till iPhone</a>
+    <a class="btn gra" id="android" href="https://github.com/VictorThelin/homeplay/releases/latest/download/homeplay.apk">Hämta Homeplay till Android</a>
+    <p class="liten" id="iphone-tips">iPhone: Homeplay finns via Apples TestFlight. Installera appen TestFlight om den frågar, och tryck sedan Installera.</p>
+    <p class="liten dold" id="android-tips">Android: välj Installera. Frågar mobilen om att tillåta appar från okända källor – tillåt det för webbläsaren.</p>
   </div>
 
-  <p class="liten">Har du inte appen?<br>
-    <a href="https://testflight.apple.com/join/ABYjd8Pv">iPhone</a> ·
-    <a href="https://github.com/VictorThelin/homeplay/releases/latest/download/homeplay.apk">Android</a></p>
+  <div class="kort" id="app">
+    <h2>Har du redan Homeplay?</h2>
+    <p id="app-text">Tryck på knappen. Homeplay öppnas och frågar om TV:n får logga in med ditt konto.</p>
+    <a class="btn gra" id="oppna" href="#">Öppna i Homeplay</a>
+    <p class="svar dold" id="inget-svar">Öppnades inte Homeplay? Då finns appen inte i mobilen (eller behöver uppdateras). Hämta den här ovanför – eller välj något av de andra sätten.</p>
+  </div>
+
+  <h3>Andra sätt</h3>
+  <ol>
+    <li><b>Skriv koden i appen:</b> öppna Homeplay i mobilen, tryck <b>Min sida → Lägg till TV</b> och skriv koden som TV:n visar just nu. Det går också i programmet Homeplay för Samsung-TV på datorn.</li>
+    <li><b>Med lösenord på TV:n:</b> välj fliken <b>Med lösenord</b> överst på TV:n (◀ ▶ på fjärrkontrollen) och skriv din e-post och ditt lösenord.</li>
+  </ol>
+  <p class="liten">Frågor? Mejla homeplayip@gmail.com · <a href="index.html" style="color:var(--dim)">Hämta Homeplay</a></p>
 </main>
 <script>
   (function () {
+    function id(x) { return document.getElementById(x); }
+    var ua = navigator.userAgent || '';
+    var ios = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+    var android = /Android/.test(ua);
     // koden från TV:n: 4–8 bokstäver/siffror, annat godtas inte
     var m = /[?&]k=([^&#]*)/.exec(location.search), k = '';
     try { k = m ? decodeURIComponent(m[1]) : ''; } catch (e) { k = ''; }
-    var btn = document.getElementById('oppna');
-    if (!/^[A-Za-z0-9]{4,8}$/.test(k)) {
-      document.getElementById('status').textContent = 'Koden saknas – skanna QR-koden på TV:n igen.';
-      document.getElementById('hjalp').className = 'dold';
-      btn.className = 'dold';
+    if (!/^[A-Za-z0-9]{4,8}$/.test(k)) k = '';
+    var btn = id('oppna'), svar = id('inget-svar'), hamta = id('hamta');
+
+    // rätt hämtknapp först och röd (som index.html): iPhone → TestFlight, Android → appen. Sidan syns bara
+    // för den som inte har appen (med appen öppnar QR-koden den direkt), så hämtningen kommer först
+    var egen = id('iphone');
+    if (android) {
+      egen = id('android');
+      hamta.insertBefore(egen, id('iphone'));
+      id('android-tips').className = 'liten'; id('iphone-tips').className = 'dold';
+    } else if (ios) {
+      id('android').className = 'dold';
+    }
+    egen.className = 'btn';
+
+    // Öppna i Homeplay gick inte: appen finns inte (eller är för gammal) – säg det vid knappen
+    function saknas() { svar.className = 'svar'; }
+    if (!k) {
+      id('sub').textContent = 'Koden från TV:n saknas. Skanna QR-koden på TV:n igen – eller välj något av sätten nedan.';
+      id('app').className = 'dold';
       return;
     }
+    // Android: Chrome kommer tillbaka hit (med app=saknas) om appen inte finns, i stället för en felsida
+    if (/[?&]app=saknas/.test(location.search)) saknas();
     var url = 'homeplay://tv?k=' + k;
+    if (android) {
+      var back = location.protocol + '//' + location.host + location.pathname + '?k=' + k + '&app=saknas';
+      url = 'intent://tv?k=' + k + '#Intent;scheme=homeplay;package=se.tittarn.tv;S.browser_fallback_url=' + encodeURIComponent(back) + ';end';
+    }
     btn.href = url;
-    location.href = url;
+    // inget automatiskt försök att öppna appen: bara när man trycker (utan appen visar Safari en felruta)
+    var t = 0;
+    function borta() { clearTimeout(t); }   // appen öppnades: sidan hamnade i bakgrunden
+    document.addEventListener('visibilitychange', function () { if (document.hidden) borta(); });
+    window.addEventListener('pagehide', borta);
+    btn.addEventListener('click', function () {
+      clearTimeout(t);
+      t = setTimeout(function () { if (!document.hidden) saknas(); }, 2500);
+    });
   })();
 </script>
 </body>
